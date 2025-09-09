@@ -1,4 +1,5 @@
 import { json } from 'co-body'
+import {getConfig} from "../services/getConfig";
 
 export async function checkCoupon(ctx: Context, next: () => Promise<any>) {
   const { id, email } = await json(ctx.req)
@@ -19,9 +20,12 @@ export async function checkCoupon(ctx: Context, next: () => Promise<any>) {
       return
     }
 
+    const settings = await getConfig(null, null, ctx);
+    const { coupon } = settings;
+
     for (const order of list) {
       const orderDetails = await ctx.clients.oms.getOrder(order.orderId)
-      if (orderDetails.marketingData?.coupon === 'CALZATODO10') {
+      if (orderDetails.marketingData?.coupon === coupon) {
         ctx.status = 200
         ctx.body = 'Coupon found, no action taken'
         return
@@ -34,7 +38,6 @@ export async function checkCoupon(ctx: Context, next: () => Promise<any>) {
 
     await next()
   } catch (error) {
-    console.error('Error checking coupon:', error)
     ctx.status = 500
     ctx.body = 'Internal Server Error'
   }
