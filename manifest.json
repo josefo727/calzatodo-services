@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "title": "Calzatodo Services",
   "description": "Backend and masterdara services",
-  "mustUpdateAt": "2025-07-01",
+  "mustUpdateAt": "2025-09-09",
   "categories": [],
   "dependencies": {},
   "builders": {
@@ -15,6 +15,21 @@
     "prereleasy": "bash lint.sh"
   },
   "policies": [
+    {
+      "name": "OMSViewer"
+    },
+    {
+      "name": "ListOrders"
+    },
+    {
+      "name": "colossus-fire-event"
+    },
+    {
+      "name": "colossus-write-logs"
+    },
+    {
+      "name": "ADMIN_DS"
+    },
     {
       "name": "outbound-access",
       "attrs": {
@@ -30,14 +45,30 @@
       }
     },
     {
-      "name": "colossus-fire-event"
-    },
-    {
-      "name": "colossus-write-logs"
-    },
-    {
-      "name": "ADMIN_DS"
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercestable.com.br",
+        "path": "/api/*"
+      }
     }
   ],
+  "settingsSchema": {
+    "title": "Calzatodo Services",
+    "type": "object",
+    "properties": {
+      "AppKey": {
+        "title": "AppKey",
+        "type": "string"
+      },
+      "AppToken": {
+        "title": "AppToken",
+        "type": "string"
+      },
+      "coupon": {
+        "title": "Coupon",
+        "type": "string"
+      }
+    }
+  },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
