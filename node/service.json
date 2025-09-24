@@ -9,6 +9,10 @@
     "checkCoupon": {
       "path": "/_v/check-coupon",
       "public": true
+    },
+    "testGiftCard": {
+      "path": "/_v/test-gift-card/:orderId",
+      "public": true
     }
   }
 }

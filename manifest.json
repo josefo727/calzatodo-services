@@ -14,6 +14,14 @@
   "scripts": {
     "prereleasy": "bash lint.sh"
   },
+  "events": {
+    "handlePaymentApproved": {
+      "sender": "vtex.orders-broadcast",
+      "topics": [
+        "payment-approved"
+      ]
+    }
+  },
   "policies": [
     {
       "name": "OMSViewer"
@@ -49,6 +57,13 @@
       "attrs": {
         "host": "portal.vtexcommercestable.com.br",
         "path": "/api/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "api.vtex.com",
+        "path": "/api/giftcards/*"
       }
     }
   ],
