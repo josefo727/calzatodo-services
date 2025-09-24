@@ -11,7 +11,6 @@ export class GiftCardService {
   }
 
   public async processOrder(orderId: string): Promise<any> {
-    console.log(`Processing order: ${orderId}`)
     const order: Order = await this.clients.oms.getOrder(orderId)
 
     const giftCardItems = order.items.filter(
@@ -19,7 +18,6 @@ export class GiftCardService {
     )
 
     if (giftCardItems.length === 0) {
-      console.log('No gift card items found')
       return
     }
 
@@ -30,15 +28,13 @@ export class GiftCardService {
         .toString()
         .padStart(2, '0')}`
 
-      try {
-        const giftCardRegistered = await this.clients.masterData.getDocumentMD(
-          'GR',
-          giftCardRegistrationId
-        )
-        // The document exists, so we skip this item
-        if (!!giftCardRegistered) continue
-      } catch (error) {
-        // The document does not exist, so we continue
+      const giftCardRegistered = await this.clients.masterData.getDocumentMD(
+        'GR',
+        giftCardRegistrationId
+      )
+
+      if (!!giftCardRegistered) {
+        continue
       }
 
       const price = Math.floor(item.price / 100)
@@ -56,8 +52,6 @@ export class GiftCardService {
         multipleRedemptions: false,
       })
 
-      console.log(`Gift card created: ${newGiftCard.id}`)
-
       await this.clients.giftCard.creditGiftCard(newGiftCard.id, {
         operation: 'Credit',
         value: price,
@@ -66,6 +60,16 @@ export class GiftCardService {
         redemptionCode: newGiftCard.redemptionCode,
         requestId: `${orderId}-${item.id}`,
       })
+
+      const updatedGiftCard = await this.clients.giftCard.getGiftCardById(
+        newGiftCard.id
+      )
+
+      if (updatedGiftCard.balance !== price) {
+        throw new Error(
+          `Gift card balance mismatch. Expected ${price}, got ${updatedGiftCard.balance}`
+        )
+      }
 
       const attachmentContent = item.attachments[0].content as any
 
@@ -79,7 +83,9 @@ export class GiftCardService {
         redemptionCode: newGiftCard.redemptionCode,
         emissionDate: newGiftCard.emissionDate,
         expiringDate: newGiftCard.expiringDate,
+        giftCardId: newGiftCard.id
       })
     }
   }
 }
+

@@ -70,4 +70,15 @@ export class GiftCardClient extends JanusClient {
       }
     )
   }
+
+  public getGiftCardById = async (giftCardId: string): Promise<GiftCard> => {
+    const { AppKey, AppToken } = await this.getAppKeys()
+
+    return this.http.get(`/api/giftcards/${giftCardId}`, {
+      headers: {
+        'X-VTEX-API-AppKey': AppKey,
+        'X-VTEX-API-AppToken': AppToken,
+      },
+    })
+  }
 }
