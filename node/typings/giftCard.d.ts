@@ -7,6 +7,7 @@ export interface GiftCard {
   emissionDate: string
   expiringDate: string
   caption: string
+  profileId: string
   currencyCode: string
   discount: boolean
   transaction: {

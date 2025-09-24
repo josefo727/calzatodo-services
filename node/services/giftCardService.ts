@@ -49,6 +49,7 @@ export class GiftCardService {
           new Date().setFullYear(new Date().getFullYear() + 1)
         ).toISOString(),
         caption: 'Gift Card',
+        profileId: order.clientProfileData.userProfileId,
         restrictedToOwner: false,
         currencyCode: 'COP',
         multipleCredits: true,
