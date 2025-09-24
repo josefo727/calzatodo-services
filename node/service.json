@@ -9,7 +9,9 @@
     "checkCoupon": {
       "path": "/_v/check-coupon",
       "public": true
-    },
+    }
+  },
+  "events": {
     "handlePaymentApproved": {
       "sender": "vtex.orders-broadcast",
       "topics": ["payment-approved"]
