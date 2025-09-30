@@ -79,7 +79,7 @@ export class GiftCardService {
         to: attachmentContent.Para,
         message: attachmentContent.Mensaje,
         email: attachmentContent['E-mail'],
-        amount: `COP $ ${price.toLocaleString('es-CO')}`,
+        amount: `$ ${price.toLocaleString('es-CO')}`,
         redemptionCode: newGiftCard.redemptionCode,
         emissionDate: newGiftCard.emissionDate,
         expiringDate: newGiftCard.expiringDate,
